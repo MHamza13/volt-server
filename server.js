@@ -24,11 +24,7 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 // ================= MIDDLEWARES =================
 app.use(
   cors({
-    origin: [
-      "http://localhost:5173",
-      "https://volt-ride-wheat.vercel.app",
-      process.env.FRONTEND_URL,
-    ],
+    origin: true, // sab origins allow
     credentials: true,
   })
 );
