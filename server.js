@@ -6,70 +6,57 @@ const cors = require("cors");
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
 const path = require("path");
-
 const connectDB = require("./config/db");
 
-// ROUTES
+// Routes Import
 const userRoutes = require("./routes/auth");
 const bikeRoutes = require("./routes/Bike");
 const stationRoutes = require("./routes/Stations");
 const rideRoutes = require("./routes/Ride");
 const paymentRoutes = require("./routes/payment");
+connectDB();
 
 const app = express();
 
-// ================= DATABASE =================
-connectDB();
+// ================= STATIC FILES =================
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-// ================= MIDDLEWARE =================
+// ================= MIDDLEWARES =================
 app.use(
   cors({
-    origin: true,
+    origin: [
+      "http://localhost:5173",
+      "https://volt-ride-wheat.vercel.app",
+      process.env.FRONTEND_URL,
+    ],
     credentials: true,
-  })
+  }),
 );
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(morgan("dev"));
 
-// ================= STATIC =================
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-
-// ================= ROUTES =================
+// ================= API ROUTES =================
 app.use("/api/auth", userRoutes);
 app.use("/api/bikes", bikeRoutes);
 app.use("/api/stations", stationRoutes);
 app.use("/api/rides", rideRoutes);
 app.use("/api/payment", paymentRoutes);
 
-// ================= ROOT =================
+// ================= HEALTH CHECK =================
 app.get("/", (req, res) => {
-  res.status(200).json({
+  res.json({
     success: true,
-    message: "🚀 Volt Backend Running Successfully",
+    message: "Server is running fine 🚀",
   });
 });
 
-// ================= ERROR HANDLER =================
-app.use((err, req, res, next) => {
-  console.error("ERROR:", err);
-
-  res.status(500).json({
-    success: false,
-    message: err.message || "Internal Server Error",
-  });
-});
-
-// ================= EXPORT =================
+// ================= EXPORT FOR VERCEL =================
 module.exports = app;
 
-// ================= LOCAL ONLY =================
-if (process.env.NODE_ENV !== "production") {
-  const PORT = process.env.PORT || 8000;
-
-  app.listen(PORT, () => {
-    console.log(`🚀 Server running on ${PORT}`);
-  });
-}
+// ================= LOCAL SERVER =================
+const PORT = process.env.PORT || 8000;
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
+});
