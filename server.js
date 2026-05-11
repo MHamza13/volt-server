@@ -21,22 +21,11 @@ connectDB();
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-const allowedOrigins = [
-  "http://localhost:5173",
-  "https://volt-ride-hazel.vercel.app",
-];
-
 app.use(
   cors({
-    origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-    credentials: true,
-  }),
+    origin: "*",
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+  })
 );
 
 app.use(express.json());
