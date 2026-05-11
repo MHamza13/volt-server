@@ -1,6 +1,5 @@
 const express = require("express");
 const dotenv = require("dotenv");
-dotenv.config();
 
 const cors = require("cors");
 const morgan = require("morgan");
@@ -14,7 +13,6 @@ const bikeRoutes = require("./routes/Bike");
 const stationRoutes = require("./routes/Stations");
 const rideRoutes = require("./routes/Ride");
 const paymentRoutes = require("./routes/payment");
-connectDB();
 
 const app = express();
 
@@ -54,6 +52,10 @@ app.get("/", (req, res) => {
 
 // ================= EXPORT FOR VERCEL =================
 module.exports = app;
+
+dotenv.config();
+
+connectDB();
 
 // ================= LOCAL SERVER =================
 const PORT = process.env.PORT || 8000;
