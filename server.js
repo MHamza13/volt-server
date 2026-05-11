@@ -25,7 +25,8 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "https://volt-ride-wheat.vercel.app",
+      "https://volt-ride-hazel.vercel.app",
+      process.env.FRONTEND_URL,
     ],
     credentials: true,
   })
