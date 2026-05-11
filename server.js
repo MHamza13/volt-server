@@ -13,7 +13,7 @@ const userRoutes = require("./routes/auth");
 const bikeRoutes = require("./routes/Bike");
 const stationRoutes = require("./routes/Stations");
 const rideRoutes = require("./routes/Ride");
-const paymentRoutes = require("./routes/payment");
+const paymentRoutes = require("./routes/Payment");
 
 const app = express();
 
