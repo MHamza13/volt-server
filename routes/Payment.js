@@ -9,10 +9,10 @@ const {
 
 const router = express.Router();
 
-router.post("/create-intent", createPaymentIntent);  // Stripe intent
-router.post("/confirm", confirmPayment);              // Confirm & wallet update
-router.post("/deduct", recordDeduction);              // Ride deduction
-router.get("/user/:userId", getUserPayments);         // User history
-router.get("/all", getAllPayments);                   // Admin
+router.post("/create-intent", createPaymentIntent);  
+router.post("/confirm", confirmPayment);             
+router.post("/deduct", recordDeduction);             
+router.get("/user/:userId", getUserPayments);        
+router.get("/all", getAllPayments);                  
 
 module.exports = router;
