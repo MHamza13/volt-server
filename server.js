@@ -24,9 +24,9 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 // ================= MIDDLEWARES =================
 app.use(
   cors({
-    origin: true, // sab origins allow
+    origin: true,
     credentials: true,
-  })
+  }),
 );
 
 app.use(express.json());
@@ -51,14 +51,6 @@ app.get("/", (req, res) => {
       stations: "/api/stations",
       rides: "/api/rides",
     },
-  });
-});
-
-// ================= HEALTH CHECK =================
-app.get("/api", (req, res) => {
-  res.json({
-    success: true,
-    message: "API is running fine 🚀",
   });
 });
 
