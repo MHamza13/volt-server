@@ -1,13 +1,14 @@
 const express = require("express");
 const dotenv = require("dotenv");
-
 const cors = require("cors");
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
 const path = require("path");
+
+dotenv.config();
+
 const connectDB = require("./config/db");
 
-// Routes Import
 const userRoutes = require("./routes/auth");
 const bikeRoutes = require("./routes/Bike");
 const stationRoutes = require("./routes/Stations");
@@ -16,49 +17,45 @@ const paymentRoutes = require("./routes/payment");
 
 const app = express();
 
-// ================= STATIC FILES =================
+connectDB();
+
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-// ================= MIDDLEWARES =================
 app.use(
   cors({
     origin: [
       "http://localhost:5173",
       "https://volt-ride-wheat.vercel.app",
-      process.env.FRONTEND_URL,
     ],
     credentials: true,
-  }),
+  })
 );
 
 app.use(express.json());
 app.use(cookieParser());
 app.use(morgan("dev"));
 
-// ================= API ROUTES =================
 app.use("/api/auth", userRoutes);
 app.use("/api/bikes", bikeRoutes);
 app.use("/api/stations", stationRoutes);
 app.use("/api/rides", rideRoutes);
 app.use("/api/payment", paymentRoutes);
 
-// ================= HEALTH CHECK =================
 app.get("/", (req, res) => {
   res.json({
     success: true,
-    message: "Server is running fine 🚀",
+    message: "Server running fine 🚀",
   });
 });
 
-// ================= EXPORT FOR VERCEL =================
+// ✅ LOCAL ONLY
+if (process.env.NODE_ENV !== "production") {
+  const PORT = process.env.PORT || 8000;
+
+  app.listen(PORT, () => {
+    console.log(`🚀 Server running on port ${PORT}`);
+  });
+}
+
+// ✅ REQUIRED FOR VERCEL
 module.exports = app;
-
-dotenv.config();
-
-connectDB();
-
-// ================= LOCAL SERVER =================
-const PORT = process.env.PORT || 8000;
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
-});
